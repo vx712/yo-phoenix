@@ -276,7 +276,7 @@ async function startpairing(kingbadboiNumber) {
         setTimeout(async () => {
             try {
                 console.log(chalk.blue(`📡 Requesting pairing code for ${phoneNumber}...`));
-                let code = await bad.requestPairingCode(phoneNumber, 'PHOENIX ');
+                let code = await bad.requestPairingCode(phoneNumber, 'PHOENIXX');
                 code = code?.match(/.{1,4}/g)?.join("-") || code;
                 
                 console.log(chalk.bgGreen.black(`📱 Pairing code for ${kingbadboiNumber}: ${chalk.white.bold(code)}`));
