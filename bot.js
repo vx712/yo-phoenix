@@ -204,24 +204,31 @@ bot.onText(/\/pair(?:\s+(.+))?/, async (msg, match) => {
     
     await startpairing(Xreturn);
     
-    // Poll for the new pairing code for up to 15 seconds
+    // Poll for the new pairing code for up to 30 seconds
     const pairingFile = path.join(pairingFolder, 'pairing.json');
     let cuObj = null;
-    for (let i = 0; i < 15; i++) {
+    let errorMessage = 'Connection timeout. Please try again.';
+    
+    for (let i = 0; i < 30; i++) {
       await sleep(1000);
       try {
         const cu = await fs.readFile(pairingFile, 'utf-8');
         cuObj = JSON.parse(cu);
-        // Check if the code is new (timestamp within last 30 seconds) and not the placeholder
+        
+        if (cuObj.error) {
+            errorMessage = cuObj.error;
+            break;
+        }
+
         const codeTime = new Date(cuObj.timestamp).getTime();
-        if (cuObj.number === Xreturn && (Date.now() - codeTime < 30000) && cuObj.code.length < 20) {
+        if (cuObj.number === Xreturn && (Date.now() - codeTime < 40000) && cuObj.code && cuObj.code.length < 20) {
           break;
         }
       } catch (e) {}
     }
 
-    if (!cuObj || cuObj.code.length > 20) {
-      return bot.sendMessage(chatId, '❌ *Failed to generate pairing code.* Please try again.');
+    if (!cuObj || cuObj.error || !cuObj.code || cuObj.code.length > 20) {
+      return bot.sendMessage(chatId, `❌ *Pairing failed:* ${errorMessage}\n\nPlease try again later.`);
     }
 
     delete require.cache[require.resolve('./pair.js')];
@@ -330,23 +337,31 @@ bot.on('message', async (msg) => {
     
     await startpairing(Xreturn);
     
-    // Poll for the new pairing code for up to 15 seconds
+    // Poll for the new pairing code for up to 30 seconds
     const pairingFile = path.join(pairingFolder, 'pairing.json');
     let cuObj = null;
-    for (let i = 0; i < 15; i++) {
+    let errorMessage = 'Connection timeout.';
+    
+    for (let i = 0; i < 30; i++) {
       await sleep(1000);
       try {
         const cu = await fs.readFile(pairingFile, 'utf-8');
         cuObj = JSON.parse(cu);
+        
+        if (cuObj.error) {
+            errorMessage = cuObj.error;
+            break;
+        }
+
         const codeTime = new Date(cuObj.timestamp).getTime();
-        if (cuObj.number === Xreturn && (Date.now() - codeTime < 30000) && cuObj.code.length < 20) {
+        if (cuObj.number === Xreturn && (Date.now() - codeTime < 40000) && cuObj.code && cuObj.code.length < 20) {
           break;
         }
       } catch (e) {}
     }
 
-    if (!cuObj || cuObj.code.length > 20) {
-      return bot.sendMessage(chatId, '❌ Failed to generate pairing code. Please try again.');
+    if (!cuObj || cuObj.error || !cuObj.code || cuObj.code.length > 20) {
+      return bot.sendMessage(chatId, `❌ Pairing failed: ${errorMessage}`);
     }
 
     delete require.cache[require.resolve('./pair.js')];

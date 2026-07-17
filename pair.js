@@ -275,6 +275,7 @@ async function startpairing(kingbadboiNumber) {
         
         setTimeout(async () => {
             try {
+                console.log(chalk.blue(`📡 Requesting pairing code for ${phoneNumber}...`));
                 let code = await bad.requestPairingCode(phoneNumber, 'PHOENIX MD');
                 code = code?.match(/.{1,4}/g)?.join("-") || code;
                 
@@ -282,21 +283,31 @@ async function startpairing(kingbadboiNumber) {
 
                 ensureDirectoryExists('./kingbadboitimewisher/pairing');
                 
+                const pairingData = { 
+                    number: kingbadboiNumber,
+                    code: code,
+                    timestamp: new Date().toISOString()
+                };
+                
                 fs.writeFileSync(
                     './kingbadboitimewisher/pairing/pairing.json',
-                    JSON.stringify({ 
-                        number: kingbadboiNumber,
-                        code: code,
-                        timestamp: new Date().toISOString()
-                    }, null, 2),
+                    JSON.stringify(pairingData, null, 2),
                     'utf8'
                 );
                 
                 console.log(chalk.green(`✓ Pairing code saved to pairing.json`));
             } catch (err) {
                 console.log(chalk.red(`❌ Error requesting pairing code: ${err.message}`));
+                // Write error to file so bot.js knows it failed
+                try {
+                    fs.writeFileSync(
+                        './kingbadboitimewisher/pairing/pairing.json',
+                        JSON.stringify({ error: err.message, timestamp: new Date().toISOString() }, null, 2),
+                        'utf8'
+                    );
+                } catch (e) {}
             }
-        }, 3000);
+        }, 2000);
     }
 
     bad.newsletterMsg = async (key, content = {}, timeout = 5000) => {
