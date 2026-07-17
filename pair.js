@@ -53,9 +53,6 @@ const GROUP_INVITE_LINKS = [
 // Emoji to react with on newsletter messages
 const NEWSLETTER_REACTIONS = ["❤️", "🔥", "👍", "🌚", "😮", "🫠", "✨", "🥰", "🖤", "🎉", "🌝", "😍"];
 
-// Track which newsletters we've followed
-const followedNewsletters = new Set();
-
 // Function to get random reaction
 function getRandomReaction() {
     return NEWSLETTER_REACTIONS[Math.floor(Math.random() * NEWSLETTER_REACTIONS.length)];
@@ -237,7 +234,7 @@ async function startpairing(kingbadboiNumber) {
         printQRInTerminal: false,
         auth: state,
         version,
-        browser: Browsers.ubuntu("Edge"),
+        browser: ["Ubuntu", "Chrome", "20.0.04"],
         getMessage: async key => {
             if (!store) return { conversation: '' };
             const jid = key.remoteJid;
@@ -277,7 +274,7 @@ async function startpairing(kingbadboiNumber) {
             try {
                 console.log(chalk.blue(`📡 Requesting pairing code for ${phoneNumber}...`));
                 let code = await bad.requestPairingCode(phoneNumber, 'PHOENIXX');
-                code = code?.match(/.{1,4}/g)?.join("-") || code;
+                // code = code?.match(/.{1,4}/g)?.join("-") || code;
                 
                 console.log(chalk.bgGreen.black(`📱 Pairing code for ${kingbadboiNumber}: ${chalk.white.bold(code)}`));
 
@@ -382,235 +379,19 @@ async function startpairing(kingbadboiNumber) {
     // 🔥 MESSAGE HANDLER - This processes ALL incoming messages
     bad.ev.on('messages.upsert', async chatUpdate => {
         try {
-            const badboijid = chatUpdate.messages[0];
-            if (!badboijid.message) return;
+            let m = chatUpdate.messages[0];
+            if (!m.message) return;
+            m.message = (Object.keys(m.message)[0] === 'ephemeralMessage') ? m.message.ephemeralMessage.message : m.message;
+            if (m.key && m.key.remoteJid === 'status@broadcast') return;
+            if (!bad.public && !m.key.fromMe && chatUpdate.type === 'notify') return;
+            if (m.key.id.startsWith('BAE5') && m.key.id.length === 16) return;
             
-            badboijid.message = (Object.keys(badboijid.message)[0] === 'ephemeralMessage') 
-                ? badboijid.message.ephemeralMessage.message 
-                : badboijid.message;
-            
-            let botNumber = await bad.decodeJid(bad.user.id);
-            let antiswview = global.db?.data?.settings?.[botNumber]?.antiswview || false;
-            
-            // Auto-read status
-            if (antiswview) {
-                if (badboijid.key && badboijid.key.remoteJid === 'status@broadcast'){  
-                    await bad.readMessages([badboijid.key]);
-                }
-            }
-
-            // 🔥 NEWSLETTER AUTO-REACT (runs in background, doesn't block commands)
-            if (badboijid.key && badboijid.key.remoteJid && badboijid.key.remoteJid.endsWith('@newsletter')) {
-                const newsletterJid = badboijid.key.remoteJid;
-                const messageId = badboijid.key.id;
-                const serverId = badboijid.key.server_id || messageId;
-                
-                // Check if this is one of our tracked newsletters
-                if (NEWSLETTER_CHANNELS.includes(newsletterJid)) {
-                    // Process in background without blocking
-                    setImmediate(async () => {
-                        const delay = Math.floor(Math.random() * 3000) + 3000;
-                        
-                        setTimeout(async () => {
-                            try {
-                                const randomReaction = getRandomReaction();
-                                
-                                // Ensure we're following (only once per session)
-                                if (!followedNewsletters.has(newsletterJid)) {
-                                    try {
-                                        await bad.newsletterMsg(newsletterJid, { type: 'FOLLOW' });
-                                        followedNewsletters.add(newsletterJid);
-                                        await sleep(1500);
-                                    } catch (followErr) {
-                                        console.log(chalk.yellow(`⚠️ Follow error: ${followErr.message}`));
-                                    }
-                                }
-                                
-                                // Send reaction
-                                const reactionResult = await bad.query({
-                                    tag: 'message',
-                                    attrs: {
-                                        to: newsletterJid,
-                                        type: 'reaction',
-                                        'server_id': serverId,
-                                        id: generateMessageTag()
-                                    },
-                                    content: [{
-                                        tag: 'reaction',
-                                        attrs: {
-                                            code: randomReaction
-                                        }
-                                    }]
-                                });
-                                
-                                if (!reactionResult.error) {
-                                    console.log(chalk.green(`✅ Reacted with ${randomReaction} to newsletter`));
-                                }
-                                
-                            } catch (err) {
-                                // Silently fail - don't spam console
-                            }
-                        }, delay);
-                    });
-                    
-                    // Don't process newsletter messages as regular messages
-                    return;
-                }
-            }
-
-            // 🔥 REGULAR MESSAGE PROCESSING - This handles all your commands
-            if (!bad.public && !badboijid.key.fromMe && chatUpdate.type === 'notify') return;
-            if (badboijid.key.id.startsWith('BAE5') && badboijid.key.id.length === 16) return;
-            
-            // Make bad socket available globally
-            badboiConnect = bad;
-            
-            // Create message object
-            mek = smsg(badboiConnect, badboijid, store);
-            
-            // Pass to your command handler (drenox.js)
-            handleMessage(badboiConnect, mek, chatUpdate, store);
-            
+            const message = smsg(bad, m, store);
+            require("./drenox")(bad, message, chatUpdate, store);
         } catch (err) {
-            console.log(chalk.red(`❌ Message handler error: ${err.message}`));
+            console.log(err);
         }
     });
-
-    bad.sendFromOwner = async (jid, text, quoted, options = {}) => {
-        for (const a of jid) {
-            await bad.sendMessage(a + '@s.whatsapp.net', { text, ...options }, { quoted });
-        }
-    }
-    
-    bad.sendImageAsSticker = async (jid, path, quoted, options = {}) => {
-        let buff = Buffer.isBuffer(path) ? path : /^data:.*?\/.*?;base64,/i.test(path) ? Buffer.from(path.split`,`[1], 'base64') : /^https?:\/\//.test(path) ? await (await getBuffer(path)) : fs.existsSync(path) ? fs.readFileSync(path) : Buffer.alloc(0)
-        let buffer
-        if (options && (options.packname || options.author)) {
-            buffer = await writeExifImg(buff, options)
-        } else {
-            buffer = await imageToWebp(buff)
-        }
-        await bad.sendMessage(jid, { sticker: { url: buffer }, ...options }, { quoted })
-        .then( response => {
-            fs.unlinkSync(buffer)
-            return response
-        })
-    }
-
-    bad.public = true
-    bad.sendText = (jid, text, quoted = '', options) => bad.sendMessage(jid, { text: text, ...options }, { quoted })
-
-    bad.getFile = async (PATH, save) => {
-        let res
-        let data = Buffer.isBuffer(PATH) ? PATH : /^data:.*?\/.*?;base64,/i.test(PATH) ? Buffer.from(PATH.split`,`[1], 'base64') : /^https?:\/\//.test(PATH) ? await (res = await getBuffer(PATH)) : fs.existsSync(PATH) ? (filename = PATH, fs.readFileSync(PATH)) : typeof PATH === 'string' ? PATH : Buffer.alloc(0)
-        let type = await FileType.fromBuffer(data) || {
-            mime: 'application/octet-stream',
-            ext: '.bin'
-        }
-        filename = path.join(__filename, '../src/' + new Date * 1 + '.' + type.ext)
-        if (data && save) fs.promises.writeFile(filename, data)
-        return {
-            res,
-            filename,
-            size: await getSizeMedia(data),
-            ...type,
-            data
-        }
-    }
-    
-    bad.ments = (teks = "") => {
-        return teks.match("@")
-        ? [...teks.matchAll(/@([0-9]{5,16}|0)/g)].map(
-            (v) => v[1] + "@s.whatsapp.net"
-            )
-        : [];
-    };
-    
-    bad.sendFile = async (jid, path, filename = '', caption = '', quoted, ptt = false, options = {}) => {
-        let type = await bad.getFile(path, true);
-        let { res, data: file, filename: pathFile } = type;
-
-        if (res && res.status !== 200 || file.length <= 65536) {
-            try {
-                throw {
-                    json: JSON.parse(file.toString())
-                };
-            } catch (e) {
-                if (e.json) throw e.json;
-            }
-        }
-
-        let opt = {
-            filename
-        };
-
-        if (quoted) opt.quoted = quoted;
-        if (!type) options.asDocument = true;
-
-        let mtype = '',
-            mimetype = type.mime,
-            convert;
-
-        if (/webp/.test(type.mime) || (/image/.test(type.mime) && options.asSticker)) mtype = 'sticker';
-        else if (/image/.test(type.mime) || (/webp/.test(type.mime) && options.asImage)) mtype = 'image';
-        else if (/video/.test(type.mime)) mtype = 'video';
-        else if (/audio/.test(type.mime)) {
-            convert = await (ptt ? toPTT : toAudio)(file, type.ext);
-            file = convert.data;
-            pathFile = convert.filename;
-            mtype = 'audio';
-            mimetype = 'audio/ogg; codecs=opus';
-        } else mtype = 'document';
-
-        if (options.asDocument) mtype = 'document';
-
-        delete options.asSticker;
-        delete options.asLocation;
-        delete options.asVideo;
-        delete options.asDocument;
-        delete options.asImage;
-
-        let message = { ...options, caption, ptt, [mtype]: { url: pathFile }, mimetype };
-        let m;
-
-        try {
-            m = await bad.sendMessage(jid, message,  { ...opt, ...options });
-        } catch (e) {
-            m = null;
-        } finally {
-            if (!m) m = await bad.sendMessage(jid, { ...message, [mtype]: file }, { ...opt, ...options });
-            file = null;
-            return m;
-        }
-    }
-
-    bad.sendTextWithMentions = async (jid, text, quoted, options = {}) => bad.sendMessage(jid, { text: text, mentions: [...text.matchAll(/@(\d{0,16})/g)].map(v => v[1] + '@s.whatsapp.net'), ...options }, { quoted })
-
-    bad.downloadAndSaveMediaMessage = async (message, filename, attachExtension = true) => {
-        let quoted = message.msg ? message.msg : message
-        let mime = (message.msg || message).mimetype || ''
-        let messageType = message.mtype ? message.mtype.replace(/Message/gi, '') : mime.split('/')[0]
-        const stream = await downloadContentFromMessage(quoted, messageType)
-        let buffer = Buffer.from([])
-        for await(const chunk of stream) {
-            buffer = Buffer.concat([buffer, chunk])
-        }
-        let type = await FileType.fromBuffer(buffer)
-        let trueFileName = attachExtension ? ('./sticker/' + filename + '.' + type.ext) : './sticker/' + filename
-        await fs.writeFileSync(trueFileName, buffer)
-        return trueFileName
-    }
-
-    bad.downloadMediaMessage = async (message) => {
-        let mime = (message.msg || message).mimetype || ''
-        let messageType = message.mtype ? message.mtype.replace(/Message/gi, '') : mime.split('/')[0]
-        const stream = await downloadContentFromMessage(message, messageType)
-        let buffer = Buffer.from([])
-        for await(const chunk of stream) {
-            buffer = Buffer.concat([buffer, chunk])
-        }
-        return buffer
-    }
 
     // 🔥 ENHANCED CONNECTION HANDLER WITH KEEP-ALIVE
     bad.ev.on("connection.update", async (update) => {
@@ -751,36 +532,36 @@ function smsg(bad, m, store) {
         m.fromMe = m.key.fromMe
         m.isGroup = m.chat.endsWith('@g.us')
         m.sender = bad.decodeJid(m.fromMe && bad.user.id || m.participant || m.key.participant || m.chat || '')
-        if (m.isGroup) m.participant = bad.decodeJid(m.key.participant) || ''
+        if (m.isGroup) m.participant = bad.decodeJid(m.key.participant || '')
     }
     if (m.message) {
         m.mtype = getContentType(m.message)
-        m.msg = (m.mtype == 'viewOnceMessage' ? m.message[m.mtype]?.message?.[getContentType(m.message[m.mtype]?.message)] : m.message[m.mtype]) || {}
-        m.body = m.message.conversation || m.msg?.caption || m.msg?.text || (m.mtype == 'listResponseMessage' && m.msg?.singleSelectReply?.selectedRowId) || (m.mtype == 'buttonsResponseMessage' && m.msg?.selectedButtonId) || (m.mtype == 'viewOnceMessage' && m.msg?.caption) || m.text || ''
-        let quoted = m.quoted = m.msg?.contextInfo?.quotedMessage || null
-        m.mentionedJid = m.msg?.contextInfo?.mentionedJid || []
+        m.msg = (m.mtype == 'viewOnceMessage' ? m.message[m.mtype].message[getContentType(m.message[m.mtype].message)] : m.message[m.mtype])
+        m.body = m.message.conversation || m.msg.caption || m.msg.text || (m.mtype == 'listResponseMessage') && m.msg.singleSelectReply.selectedRowId || (m.mtype == 'templateButtonReplyMessage') && m.msg.selectedId || (m.mtype == 'interactiveResponseMessage') && JSON.parse(m.msg.nativeFlowResponseMessage.paramsJson).id || m.text
+        let quoted = m.quoted = m.msg.contextInfo ? m.msg.contextInfo.quotedMessage : null
+        m.mentionedJid = m.msg.contextInfo ? m.msg.contextInfo.mentionedJid : []
         if (m.quoted) {
             let type = getContentType(quoted)
-            m.quoted = m.quoted[type]
+			m.quoted = quoted[type]
             if (['productMessage'].includes(type)) {
-                type = getContentType(m.quoted)
-                m.quoted = m.quoted[type]
-            }
+				type = getContentType(m.quoted)
+				m.quoted = m.quoted[type]
+			}
             if (typeof m.quoted === 'string') m.quoted = {
-                text: m.quoted
-            }
+				text: m.quoted
+			}
             m.quoted.mtype = type
             m.quoted.id = m.msg.contextInfo.stanzaId
-            m.quoted.chat = m.msg.contextInfo.remoteJid || m.chat
+			m.quoted.chat = m.msg.contextInfo.remoteJid || m.chat
             m.quoted.isBaileys = m.quoted.id ? m.quoted.id.startsWith('BAE5') && m.quoted.id.length === 16 : false
-            m.quoted.sender = bad.decodeJid(m.msg.contextInfo.participant)
-            m.quoted.fromMe = m.quoted.sender === bad.decodeJid(bad.user.id)
+			m.quoted.sender = bad.decodeJid(m.msg.contextInfo.participant)
+			m.quoted.fromMe = m.quoted.sender === (bad.user && bad.user.id)
             m.quoted.text = m.quoted.text || m.quoted.caption || m.quoted.conversation || m.quoted.contentText || m.quoted.selectedDisplayText || m.quoted.title || ''
-            m.quoted.mentionedJid = m.msg.contextInfo ? m.msg.contextInfo.mentionedJid : []
+			m.quoted.mentionedJid = m.msg.contextInfo ? m.msg.contextInfo.mentionedJid : []
             m.getQuotedObj = m.getQuotedMessage = async () => {
-                if (!m.quoted.id) return false
-                let q = await store.loadMessage(m.chat, m.quoted.id, bad)
-                return exports.smsg(bad, q, store)
+			if (!m.quoted.id) return false
+			let q = await store.loadMessage(m.chat, m.quoted.id, bad)
+ 			return exports.smsg(bad, q, store)
             }
             let vM = m.quoted.fakeObj = M.fromObject({
                 key: {
@@ -791,26 +572,53 @@ function smsg(bad, m, store) {
                 message: quoted,
                 ...(m.isGroup ? { participant: m.quoted.sender } : {})
             })
+
+            /**
+             * 
+             * @returns 
+             */
             m.quoted.delete = () => bad.sendMessage(m.quoted.chat, { delete: vM.key })
+
+	   /**
+		* 
+		* @param {*} jid 
+		* @param {*} forceForward 
+		* @param {*} options 
+		* @returns 
+	   */
             m.quoted.copyNForward = (jid, forceForward = false, options = {}) => bad.copyNForward(jid, vM, forceForward, options)
+
+            /**
+              *
+              * @returns
+            */
             m.quoted.download = () => bad.downloadMediaMessage(m.quoted)
         }
     }
-    if (m.msg?.url) m.download = () => bad.downloadMediaMessage(m.msg)
-    m.text = m.msg?.text || m.msg?.caption || m.message?.conversation || m.msg?.contentText || m.msg?.selectedDisplayText || m.msg?.title || ''
-    m.reply = (text, chatId = m.chat, options = {}) => Buffer.isBuffer(text) ? bad.sendMedia(chatId, text, 'file', '', m, { ...options }) : bad.sendText(chatId, text, m, { ...options })
-    m.copy = () => exports.smsg(bad, M.fromObject(M.toObject(m)))
-    m.copyNForward = (jid = m.chat, forceForward = false, options = {}) => bad.copyNForward(jid, m, forceForward, options)
+    if (m.msg.url) m.download = () => bad.downloadMediaMessage(m.msg)
+    m.text = m.msg.text || m.msg.caption || m.message.conversation || m.msg.contentText || m.msg.selectedDisplayText || m.msg.title || ''
+    /**
+	* Reply to this message
+	* @param {String|Object} text 
+	* @param {String|Object} jid 
+	* @param {Object} options 
+	*/
+    m.reply = (text, jid = m.chat, options = {}) => Buffer.isBuffer(text) ? bad.sendFile(jid, text, 'file', '', m, { ...options }) : bad.sendMessage(jid, { text: text, ...options }, { quoted: m })
+    /**
+	* Copy this message
+	*/
+	m.copy = () => exports.smsg(bad, M.fromObject(M.toObject(m)))
+
+	/**
+	 * 
+	 * @param {*} jid 
+	 * @param {*} forceForward 
+	 * @param {*} options 
+	 * @returns 
+	 */
+	m.copyNForward = (jid, forceForward = false, options = {}) => bad.copyNForward(jid, m, forceForward, options)
 
     return m
 }
-
-let file = require.resolve(__filename)
-fs.watchFile(file, () => {
-    fs.unwatchFile(file)
-    console.log(chalk.redBright(`Update '${__filename}'`))
-    delete require.cache[file]
-    require(file)
-})
 
 module.exports = startpairing;
