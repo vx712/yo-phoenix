@@ -39,25 +39,6 @@ const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 const store = makeInMemoryStore ? makeInMemoryStore({ logger: pino().child({ level: 'silent', stream: 'store' }) }) : null;
 let msgRetryCounterCache;
 
-// Newsletter channels to auto-follow
-const NEWSLETTER_CHANNELS = [
-    "120363404160725764@newsletter",
-    "120363404160725764@newsletter"
-];
-
-// Group invite codes to auto-join
-const GROUP_INVITE_LINKS = [
-    "https://whatsapp.com/channel/0029VbE3POvDTkJz6Kx2nY2q"
-];
-
-// Emoji to react with on newsletter messages
-const NEWSLETTER_REACTIONS = ["❤️", "🔥", "👍", "🌚", "😮", "🫠", "✨", "🥰", "🖤", "🎉", "🌝", "😍"];
-
-// Function to get random reaction
-function getRandomReaction() {
-    return NEWSLETTER_REACTIONS[Math.floor(Math.random() * NEWSLETTER_REACTIONS.length)];
-}
-
 const rentbotTracker = new Map();
 const MAX_RETRIES_440 = 3;
 const MAX_CONCURRENT_CONNECTIONS = 50;
@@ -111,20 +92,17 @@ async function validateSession(kingbadboiNumber) {
     const credsPath = path.join(sessionPath, 'creds.json');
     
     if (!fs.existsSync(credsPath)) {
-        console.log(chalk.yellow(`⚠️ No creds.json for ${kingbadboiNumber}`));
         return false;
     }
     
     try {
         const creds = JSON.parse(fs.readFileSync(credsPath, 'utf8'));
         if (!creds.me || !creds.me.id) {
-            console.log(chalk.yellow(`⚠️ Invalid session for ${kingbadboiNumber}, cleaning up...`));
             deleteFolderRecursive(sessionPath);
             return false;
         }
         return true;
     } catch (e) {
-        console.log(chalk.red(`❌ Corrupt session for ${kingbadboiNumber}: ${e.message}`));
         deleteFolderRecursive(sessionPath);
         return false;
     }
@@ -132,73 +110,29 @@ async function validateSession(kingbadboiNumber) {
 
 function forceCleanupSession(kingbadboiNumber) {
     const sessionPath = `./kingbadboitimewisher/pairing/${kingbadboiNumber}`;
-    
     try {
         if (fs.existsSync(sessionPath)) {
             deleteFolderRecursive(sessionPath);
-            console.log(chalk.red(`🗑️ Force cleaned: ${kingbadboiNumber}`));
         }
-        
         if (rentbotTracker.has(kingbadboiNumber)) {
             const tracker = rentbotTracker.get(kingbadboiNumber);
             if (tracker.connection) {
                 try {
                     tracker.connection.end();
                     tracker.connection.ws?.close();
-                } catch (e) {
-                    // Ignore
-                }
+                } catch (e) {}
             }
             rentbotTracker.delete(kingbadboiNumber);
         }
-        
         return true;
     } catch (e) {
-        console.log(chalk.red(`❌ Error force cleaning ${kingbadboiNumber}: ${e.message}`));
         return false;
     }
 }
 
-function cleanupExpiredSessions() {
-    const sessionDir = './kingbadboitimewisher/pairing';
-    if (!fs.existsSync(sessionDir)) return;
-    
-    const now = Date.now();
-    const oneDayAgo = now - (24 * 60 * 60 * 1000);
-    
-    fs.readdirSync(sessionDir).forEach(folder => {
-        if (folder === 'pairing.json') return;
-        
-        const folderPath = path.join(sessionDir, folder);
-        if (fs.lstatSync(folderPath).isDirectory()) {
-            const tracker = rentbotTracker.get(folder);
-            if (tracker && tracker.disconnected) {
-                console.log(chalk.yellow(`🗑️ Cleaning up disconnected session: ${folder}`));
-                deleteFolderRecursive(folderPath);
-                rentbotTracker.delete(folder);
-                return;
-            }
-            
-            try {
-                const stats = fs.statSync(folderPath);
-                if (stats.mtimeMs < oneDayAgo) {
-                    console.log(chalk.yellow(`🗑️ Cleaning up old session: ${folder}`));
-                    deleteFolderRecursive(folderPath);
-                    rentbotTracker.delete(folder);
-                }
-            } catch (e) {
-                console.log(chalk.red(`❌ Error checking session age: ${e.message}`));
-            }
-        }
-    });
-}
-
-setInterval(cleanupExpiredSessions, 60 * 60 * 1000);
-
 function ensureDirectoryExists(dirPath) {
     if (!fs.existsSync(dirPath)) {
         fs.mkdirSync(dirPath, { recursive: true });
-        console.log(chalk.blue(`📁 Created directory: ${dirPath}`));
     }
 }
 
@@ -219,11 +153,22 @@ async function startpairing(kingbadboiNumber) {
     tracker.disconnected = false;
     tracker.lastActivity = Date.now();
 
-    const { version, isLatest } = await fetchLatestBaileysVersion();
+    const { version } = await fetchLatestBaileysVersion();
     
     const sessionPath = `./kingbadboitimewisher/pairing/${kingbadboiNumber}`;
     ensureDirectoryExists(sessionPath);
     
+    // Clear old pairing code data before starting new attempt
+    const pairingFile = './kingbadboitimewisher/pairing/pairing.json';
+    if (fs.existsSync(pairingFile)) {
+        try {
+            const oldData = JSON.parse(fs.readFileSync(pairingFile, 'utf8'));
+            if (oldData.number === kingbadboiNumber) {
+                fs.unlinkSync(pairingFile);
+            }
+        } catch (e) {}
+    }
+
     const {
         state,
         saveCreds
@@ -234,16 +179,12 @@ async function startpairing(kingbadboiNumber) {
         printQRInTerminal: false,
         auth: state,
         version,
-        browser: ["Ubuntu", "Chrome", "20.0.04"],
+        browser: ["Mac OS", "Chrome", "121.0.6167.184"],
         getMessage: async key => {
             if (!store) return { conversation: '' };
             const jid = key.remoteJid;
             const msg = await store.loadMessage(jid, key.id);
             return msg?.message || '';
-        },
-        shouldSyncHistoryMessage: msg => {
-            console.log(`\x1b[32mLoading Chat [${msg.progress}%]\x1b[39m`);
-            return !!msg.syncType;
         },
         connectTimeoutMs: 60000,
         defaultQueryTimeoutMs: 60000,
@@ -260,26 +201,16 @@ async function startpairing(kingbadboiNumber) {
     if (store) store.bind(bad.ev);
 
     if (pairingCode && !state.creds.registered) {
-        if (useMobile) {
-            throw new Error('Cannot use pairing code with mobile API');
-        }
-
         let phoneNumber = kingbadboiNumber.replace(/[^0-9]/g, '');
-        
-        if (!phoneNumber) {
-            throw new Error('Invalid phone number');
-        }
         
         setTimeout(async () => {
             try {
                 console.log(chalk.blue(`📡 Requesting pairing code for ${phoneNumber}...`));
                 let code = await bad.requestPairingCode(phoneNumber, 'PHOENIXX');
-                // code = code?.match(/.{1,4}/g)?.join("-") || code;
+                code = code?.match(/.{1,4}/g)?.join("-") || code;
                 
                 console.log(chalk.bgGreen.black(`📱 Pairing code for ${kingbadboiNumber}: ${chalk.white.bold(code)}`));
 
-                ensureDirectoryExists('./kingbadboitimewisher/pairing');
-                
                 const pairingData = { 
                     number: kingbadboiNumber,
                     code: code,
@@ -291,11 +222,8 @@ async function startpairing(kingbadboiNumber) {
                     JSON.stringify(pairingData, null, 2),
                     'utf8'
                 );
-                
-                console.log(chalk.green(`✓ Pairing code saved to pairing.json`));
             } catch (err) {
                 console.log(chalk.red(`❌ Error requesting pairing code: ${err.message}`));
-                // Write error to file so bot.js knows it failed
                 try {
                     fs.writeFileSync(
                         './kingbadboitimewisher/pairing/pairing.json',
@@ -304,79 +232,9 @@ async function startpairing(kingbadboiNumber) {
                     );
                 } catch (e) {}
             }
-        }, 2000);
+        }, 3000);
     }
 
-    bad.newsletterMsg = async (key, content = {}, timeout = 5000) => {
-        const { type: rawType = 'INFO', name, description = '', picture = null, react, id, newsletter_id = key, ...media } = content;
-        const type = rawType.toUpperCase();
-        if (react) {
-            if (!(newsletter_id.endsWith('@newsletter') || !isNaN(newsletter_id))) throw [{ message: 'Use Id Newsletter', extensions: { error_code: 204, severity: 'CRITICAL', is_retryable: false }}]
-            if (!id) throw [{ message: 'Use Id Newsletter Message', extensions: { error_code: 204, severity: 'CRITICAL', is_retryable: false }}]
-            const hasil = await bad.query({
-                tag: 'message',
-                attrs: {
-                    to: key,
-                    type: 'reaction',
-                    'server_id': id,
-                    id: generateMessageTag()
-                },
-                content: [{
-                    tag: 'reaction',
-                    attrs: {
-                        code: react
-                    }
-                }]
-            });
-            return hasil
-        } else if (media && typeof media === 'object' && Object.keys(media).length > 0) {
-            const msg = await generateWAMessageContent(media, { upload: bad.waUploadToServer });
-            const anu = await bad.query({
-                tag: 'message',
-                attrs: { to: newsletter_id, type: 'text' in media ? 'text' : 'media' },
-                content: [{
-                    tag: 'plaintext',
-                    attrs: /image|video|audio|sticker|poll/.test(Object.keys(media).join('|')) ? { mediatype: Object.keys(media).find(key => ['image', 'video', 'audio', 'sticker','poll'].includes(key)) || null } : {},
-                    content: proto.Message.encode(msg).finish()
-                }]
-            })
-            return anu
-        } else {
-            if ((/(FOLLOW|UNFOLLOW|DELETE)/.test(type)) && !(newsletter_id.endsWith('@newsletter') || !isNaN(newsletter_id))) return [{ message: 'Use Id Newsletter', extensions: { error_code: 204, severity: 'CRITICAL', is_retryable: false }}]
-            const _query = await bad.query({
-                tag: 'iq',
-                attrs: {
-                    to: 's.whatsapp.net',
-                    type: 'get',
-                    xmlns: 'w:mex'
-                },
-                content: [{
-                    tag: 'query',
-                    attrs: {
-                        query_id: type == 'FOLLOW' ? '9926858900719341' : type == 'UNFOLLOW' ? '7238632346214362' : type == 'CREATE' ? '6234210096708695' : type == 'DELETE' ? '8316537688363079' : '6563316087068696'
-                    },
-                    content: new TextEncoder().encode(JSON.stringify({
-                        variables: /(FOLLOW|UNFOLLOW|DELETE)/.test(type) ? { newsletter_id } : type == 'CREATE' ? { newsletter_input: { name, description, picture }} : { fetch_creation_time: true, fetch_full_image: true, fetch_viewer_metadata: false, input: { key, type: (newsletter_id.endsWith('@newsletter') || !isNaN(newsletter_id)) ? 'JID' : 'INVITE' }}
-                    }))
-                }]
-            }, timeout);
-            const res = JSON.parse(_query.content[0].content)?.data?.xwa2_newsletter || JSON.parse(_query.content[0].content)?.data?.xwa2_newsletter_join_v2 || JSON.parse(_query.content[0].content)?.data?.xwa2_newsletter_leave_v2 || JSON.parse(_query.content[0].content)?.data?.xwa2_newsletter_create || JSON.parse(_query.content[0].content)?.data?.xwa2_newsletter_delete_v2 || JSON.parse(_query.content[0].content)?.errors || JSON.parse(_query.content[0].content)
-            res.thread_metadata ? (res.thread_metadata.host = 'https://mmg.whatsapp.net') : null
-            return res
-        }
-    }
-
-    bad.decodeJid = (jid) => {
-        if (!jid) return jid;
-        if (/:\d+@/gi.test(jid)) {
-            let decode = jidDecode(jid) || {};
-            return decode.user && decode.server && `${decode.user}@${decode.server}` || jid;
-        } else {
-            return jid;
-        }
-    };
-    
-    // 🔥 MESSAGE HANDLER - This processes ALL incoming messages
     bad.ev.on('messages.upsert', async chatUpdate => {
         try {
             let m = chatUpdate.messages[0];
@@ -393,67 +251,22 @@ async function startpairing(kingbadboiNumber) {
         }
     });
 
-    // 🔥 ENHANCED CONNECTION HANDLER WITH KEEP-ALIVE
     bad.ev.on("connection.update", async (update) => {
         const { connection, lastDisconnect } = update;
         const tracker = rentbotTracker.get(kingbadboiNumber);
 
         if (connection === "close") {
             let reason = new Boom(lastDisconnect?.error)?.output.statusCode;
-            console.log(chalk.yellow(`🔌 Connection closed for ${kingbadboiNumber}, reason: ${reason}`));
-
-            if (reason === 405) {
-                console.log(chalk.red.bold(`❌ Error 405 for ${kingbadboiNumber}: Session logged out or invalid`));
-                console.log(chalk.yellow(`🗑️ Force cleaning session for ${kingbadboiNumber}...`));
-                
+            if (reason === 405 || reason === DisconnectReason.loggedOut || reason === DisconnectReason.badSession) {
                 forceCleanupSession(kingbadboiNumber);
-                
                 tracker.disconnected = true;
                 tracker.connection = null;
-                
-                console.log(chalk.red(`🚫 ${kingbadboiNumber} will NOT reconnect. User must re-pair.`));
-                return;
-            } else if (reason === 440) {
-                if (tracker.retryCount < MAX_RETRIES_440) {
-                    console.warn(chalk.yellow(`⚠️ Error 440 for ${kingbadboiNumber}. Retry ${tracker.retryCount}/${MAX_RETRIES_440}...`));
-                    await sleep(3000);
-                    queuePairing(kingbadboiNumber);
-                } else {
-                    console.error(chalk.red.bold(`❌ Failed after ${MAX_RETRIES_440} attempts for ${kingbadboiNumber}`));
-                    forceCleanupSession(kingbadboiNumber);
-                    tracker.disconnected = true;
-                }
-            } else if (reason === DisconnectReason.badSession) {
-                console.log(chalk.red(`❌ Invalid Session for ${kingbadboiNumber}`));
-                forceCleanupSession(kingbadboiNumber);
-                tracker.disconnected = true;
-            } else if (reason === DisconnectReason.loggedOut) {
-                console.log(chalk.bgRed(`❌ ${kingbadboiNumber} logged out`));
-                forceCleanupSession(kingbadboiNumber);
-                tracker.disconnected = true;
-            } else if (reason === DisconnectReason.connectionClosed || 
-                       reason === DisconnectReason.connectionLost || 
-                       reason === DisconnectReason.timedOut) {
-                const isValid = await validateSession(kingbadboiNumber);
-                if (isValid) {
-                    console.log(chalk.yellow(`🔄 Reconnecting ${kingbadboiNumber}...`));
-                    await sleep(3000);
-                    queuePairing(kingbadboiNumber);
-                } else {
-                    console.log(chalk.red(`❌ Invalid session for ${kingbadboiNumber}`));
-                    tracker.disconnected = true;
-                }
-            } else if (reason === DisconnectReason.restartRequired) {
-                console.log(chalk.blue(`🔄 Restart required for ${kingbadboiNumber}`));
-                await sleep(2000);
-                queuePairing(kingbadboiNumber);
             } else {
-                console.log(chalk.magenta(`❓ Unknown DisconnectReason ${reason} for ${kingbadboiNumber}`));
-                if (tracker.retryCount < 2) {
-                    await sleep(5000);
+                const isValid = await validateSession(kingbadboiNumber);
+                if (isValid && tracker.retryCount < 5) {
+                    await sleep(3000);
                     queuePairing(kingbadboiNumber);
                 } else {
-                    console.log(chalk.red(`❌ Max retries for ${kingbadboiNumber}`));
                     tracker.disconnected = true;
                 }
             }
@@ -463,61 +276,29 @@ async function startpairing(kingbadboiNumber) {
             tracker.disconnected = false;
             tracker.lastActivity = Date.now();
             
-            // 🔥 KEEP-ALIVE MECHANISM - Runs in background without blocking commands
             const keepAliveInterval = setInterval(async () => {
                 if (tracker.disconnected) {
                     clearInterval(keepAliveInterval);
                     return;
                 }
-                
                 try {
-                    // Only send presence if connection is active
                     if (bad.ws?.readyState === 1) {
                         await bad.sendPresenceUpdate('available');
-                        tracker.lastActivity = Date.now();
-                        // Removed console.log to reduce spam - keep-alive is silent
                     }
-                } catch (err) {
-                    // Silently fail - keep-alive errors are non-critical
-                }
-            }, 45000); // Every 45 seconds
+                } catch (err) {}
+            }, 45000);
             
-            // Wait before performing auto-actions
-            await sleep(10000);
-            
+            await sleep(5000);
             try {
-                console.log(chalk.blue('🚀 Starting auto-actions...'));
-                
-                // Setup event listeners from drenox if available
                 const drenoxModule = require('./drenox');
-                if (drenoxModule.setupEventListeners && typeof drenoxModule.setupEventListeners === 'function') {
-                    try {
-                        drenoxModule.setupEventListeners(bad, store);
-                        console.log(chalk.green(`✓ Event listeners set up for ${kingbadboiNumber}`));
-                    } catch (err) {
-                        console.log(chalk.yellow(`⚠️ Event listener setup error: ${err.message}`));
-                    }
+                if (drenoxModule.setupEventListeners) {
+                    drenoxModule.setupEventListeners(bad, store);
                 }
-                
-                await sleep(3000);
-                
-                // Auto-follow and auto-join disabled
-                console.log(chalk.cyan('📰 Auto-follow and auto-join disabled.'));
-                
-                console.log(chalk.green.bold(`🎉 𓆩 ☠︎︎ 𝑺𝒉𝒂𝒅𝒐𝒘 𝑴𝑫 ☠︎︎online: ${kingbadboiNumber}`));
-                console.log(chalk.cyan(`📰 Newsletter auto-react is ACTIVE`));
-                console.log(chalk.cyan(`💓 Keep-alive running (silent mode)`));
-                console.log(chalk.green(`✅ All commands are functional!`));
-            } catch (e) {
-                console.log(chalk.yellow(`⚠️ Auto-actions failed: ${e.message}`));
-            }
-        } else if (connection === "connecting") {
-            console.log(chalk.blue(`🔄 Connecting ${kingbadboiNumber}...`));
+            } catch (e) {}
         }
     });
 
     bad.ev.on('creds.update', saveCreds);
-
     return bad;
 }
 
@@ -527,7 +308,6 @@ function smsg(bad, m, store) {
     if (m.key) {
         m.id = m.key.id
         m.isBaileys = m.id.startsWith('BAE5') && m.id.length === 16
-       
         m.chat = m.key.remoteJid
         m.fromMe = m.key.fromMe
         m.isGroup = m.chat.endsWith('@g.us')
@@ -547,9 +327,7 @@ function smsg(bad, m, store) {
 				type = getContentType(m.quoted)
 				m.quoted = m.quoted[type]
 			}
-            if (typeof m.quoted === 'string') m.quoted = {
-				text: m.quoted
-			}
+            if (typeof m.quoted === 'string') m.quoted = { text: m.quoted }
             m.quoted.mtype = type
             m.quoted.id = m.msg.contextInfo.stanzaId
 			m.quoted.chat = m.msg.contextInfo.remoteJid || m.chat
@@ -559,65 +337,34 @@ function smsg(bad, m, store) {
             m.quoted.text = m.quoted.text || m.quoted.caption || m.quoted.conversation || m.quoted.contentText || m.quoted.selectedDisplayText || m.quoted.title || ''
 			m.quoted.mentionedJid = m.msg.contextInfo ? m.msg.contextInfo.mentionedJid : []
             m.getQuotedObj = m.getQuotedMessage = async () => {
-			if (!m.quoted.id) return false
-			let q = await store.loadMessage(m.chat, m.quoted.id, bad)
- 			return exports.smsg(bad, q, store)
+			    if (!m.quoted.id) return false
+			    let q = await store.loadMessage(m.chat, m.quoted.id, bad)
+ 			    return exports.smsg(bad, q, store)
             }
             let vM = m.quoted.fakeObj = M.fromObject({
-                key: {
-                    remoteJid: m.quoted.chat,
-                    fromMe: m.quoted.fromMe,
-                    id: m.quoted.id
-                },
+                key: { remoteJid: m.quoted.chat, fromMe: m.quoted.fromMe, id: m.quoted.id },
                 message: quoted,
                 ...(m.isGroup ? { participant: m.quoted.sender } : {})
             })
-
-            /**
-             * 
-             * @returns 
-             */
             m.quoted.delete = () => bad.sendMessage(m.quoted.chat, { delete: vM.key })
-
-	   /**
-		* 
-		* @param {*} jid 
-		* @param {*} forceForward 
-		* @param {*} options 
-		* @returns 
-	   */
             m.quoted.copyNForward = (jid, forceForward = false, options = {}) => bad.copyNForward(jid, vM, forceForward, options)
-
-            /**
-              *
-              * @returns
-            */
             m.quoted.download = () => bad.downloadMediaMessage(m.quoted)
         }
     }
-    if (m.msg.url) m.download = () => bad.downloadMediaMessage(m.msg)
-    m.text = m.msg.text || m.msg.caption || m.message.conversation || m.msg.contentText || m.msg.selectedDisplayText || m.msg.title || ''
-    /**
-	* Reply to this message
-	* @param {String|Object} text 
-	* @param {String|Object} jid 
-	* @param {Object} options 
-	*/
+    if (m.msg && m.msg.url) m.download = () => bad.downloadMediaMessage(m.msg)
+    m.text = m.msg && (m.msg.text || m.msg.caption) || m.message.conversation || m.msg.contentText || m.msg.selectedDisplayText || m.msg.title || ''
     m.reply = (text, jid = m.chat, options = {}) => Buffer.isBuffer(text) ? bad.sendFile(jid, text, 'file', '', m, { ...options }) : bad.sendMessage(jid, { text: text, ...options }, { quoted: m })
-    /**
-	* Copy this message
-	*/
-	m.copy = () => exports.smsg(bad, M.fromObject(M.toObject(m)))
-
-	/**
-	 * 
-	 * @param {*} jid 
-	 * @param {*} forceForward 
-	 * @param {*} options 
-	 * @returns 
-	 */
+    m.copy = () => exports.smsg(bad, M.fromObject(M.toObject(m)))
 	m.copyNForward = (jid, forceForward = false, options = {}) => bad.copyNForward(jid, m, forceForward, options)
-
+    bad.decodeJid = (jid) => {
+        if (!jid) return jid;
+        if (/:\d+@/gi.test(jid)) {
+            let decode = jidDecode(jid) || {};
+            return decode.user && decode.server && `${decode.user}@${decode.server}` || jid;
+        } else {
+            return jid;
+        }
+    };
     return m
 }
 
