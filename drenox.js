@@ -1294,8 +1294,8 @@ case 'menu2': {
   const menuText = `
 ╭━━〔 ☠️ ᴀʟʟ ᴄᴏᴍᴍᴀɴᴅs ☠️ 〕━━┈⊷
 ┃✮╭────────────────
-┃✮│ 🤖 ʙᴏᴛ  :*𓆰⟵̠̽͢『🇮🇳』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪︎︎*
-┃✮│ 👑 ᴏᴡɴᴇʀ : *𓆰⟵̠̽͢『🇮🇳』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪︎︎*
+┃✮│ 🤖 ʙᴏᴛ  :*𓆰⟵̠̽͢『𝑰𝑵𝑫』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪*
+┃✮│ 👑 ᴏᴡɴᴇʀ : *𓆰⟵̠̽͢『𝑰𝑵𝑫』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪*
 ┃✮│ 📦 ᴠᴇʀsɪᴏɴ  : *2.0*
 ┃✮│ 📡 ᴘʟᴀᴛғᴏʀᴍ : *𝙏𝙚𝙡𝙚𝙜𝙧𝙖𝙢*
 ┃✮╰────────────────
@@ -1862,7 +1862,7 @@ case 'menu2': {
       isForwarded: true,
       forwardedNewsletterMessageInfo: {
         newsletterJid: NEWSLETTER_JID,
-        newsletterName: "𓆰⟵̠̽͢『🇮🇳』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪︎︎",
+        newsletterName: "𓆰⟵̠̽͢『𝑰𝑵𝑫』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪",
         serverMessageId: -1
       }
     }
@@ -1901,8 +1901,8 @@ case 'listmenu': {
   const menuText = `
 ╭━━〔 ☠️ ᴀʟʟ ᴄᴏᴍᴍᴀɴᴅs ☠️ 〕━━┈⊷
 ┃✮╭────────────────
-┃✮│ 🤖 ʙᴏᴛ  :*𓆰⟵̠̽͢『🇮🇳』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪︎︎*
-┃✮│ 👑 ᴏᴡɴᴇʀ : *☠︎︎𓆩𝑺𝒉𝒂𝒅𝒐𝒘 𝑶𝒇𝒇𝒊𝒄𝒊𝒂𝒍𓆪☠︎︎*
+┃✮│ 🤖 ʙᴏᴛ  :*𓆰⟵̠̽͢『𝑰𝑵𝑫』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪*
+┃✮│ 👑 ᴏᴡɴᴇʀ : *𓆰⟵̠̽͢『𝑰𝑵𝑫』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪*
 ┃✮│ 📦 ᴠᴇʀsɪᴏɴ  : *2.0*
 ┃✮│ 📡 ᴘʟᴀᴛғᴏʀᴍ : *𝙏𝙚𝙡𝙚𝙜𝙧𝙖𝙢*
 ┃✮╰────────────────
@@ -1927,7 +1927,7 @@ case 'listmenu': {
 ┃✮│➣ ${prefix}ɪᴍᴀɢᴇᴍᴇɴᴜ
 ╰━━━━━━━━━━━━━━━┈⊷
 
-> ᴘᴏᴡᴇʀᴇᴅ ʙʏ 𓆰⟵̠̽͢『🇮🇳』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪︎︎`
+> ᴘᴏᴡᴇʀᴇᴅ ʙʏ 𓆰⟵̠̽͢『𝑰𝑵𝑫』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪`
 
   await bad.sendMessage(from, {
     image: { url: randomImage },
@@ -1937,7 +1937,7 @@ case 'listmenu': {
       isForwarded: true,
       forwardedNewsletterMessageInfo: {
         newsletterJid: NEWSLETTER_JID,
-        newsletterName: "𓆰⟵̠̽͢『🇮🇳』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪︎︎",
+        newsletterName: "𓆰⟵̠̽͢『𝑰𝑵𝑫』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪",
         serverMessageId: -1
       }
     }
@@ -2081,7 +2081,7 @@ case 'groupmenu': {
       isForwarded: true,
       forwardedNewsletterMessageInfo: {
         newsletterJid: NEWSLETTER_JID,
-        newsletterName: "𓆰⟵̠̽͢『🇮🇳』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪︎︎",
+        newsletterName: "𓆰⟵̠̽͢『𝑰𝑵𝑫』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪",
         serverMessageId: -1
               }
     }
@@ -2138,7 +2138,7 @@ case 'downloadmenu': {
       isForwarded: true,
       forwardedNewsletterMessageInfo: {
         newsletterJid: NEWSLETTER_JID,
-        newsletterName: "to𓆰⟵̠̽͢『🇮🇳』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪︎︎",
+        newsletterName: "to𓆰⟵̠̽͢『𝑰𝑵𝑫』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪",
         serverMessageId: -1
         }
     }
@@ -2218,7 +2218,7 @@ case 'funmenu': {
       isForwarded: true,
       forwardedNewsletterMessageInfo: {
         newsletterJid: NEWSLETTER_JID,
-        newsletterName: "𓆰⟵̠̽͢『🇮🇳』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪︎︎",
+        newsletterName: "𓆰⟵̠̽͢『𝑰𝑵𝑫』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪",
         serverMessageId: -1
               }
     }
@@ -2265,7 +2265,7 @@ case 'gamemenu': {
       isForwarded: true,
       forwardedNewsletterMessageInfo: {
         newsletterJid: NEWSLETTER_JID,
-        newsletterName: "𓆰⟵̠̽͢『🇮🇳』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪︎︎",
+        newsletterName: "𓆰⟵̠̽͢『𝑰𝑵𝑫』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪",
         serverMessageId: -1
               }
     }
@@ -2358,7 +2358,7 @@ case 'animemenu': {
       isForwarded: true,
       forwardedNewsletterMessageInfo: {
         newsletterJid: NEWSLETTER_JID,
-        newsletterName: "𓆰⟵̠̽͢『🇮🇳』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪︎︎",
+        newsletterName: "𓆰⟵̠̽͢『𝑰𝑵𝑫』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪",
         serverMessageId: -1
               }
     }
@@ -2410,7 +2410,7 @@ case 'stickermenu': {
       isForwarded: true,
       forwardedNewsletterMessageInfo: {
         newsletterJid: NEWSLETTER_JID,
-        newsletterName: "𓆰⟵̠̽͢『🇮🇳』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪︎︎",
+        newsletterName: "𓆰⟵̠̽͢『𝑰𝑵𝑫』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪",
         serverMessageId: -1
               }
     }
@@ -2509,7 +2509,7 @@ case 'utilitymenu': {
       isForwarded: true,
       forwardedNewsletterMessageInfo: {
         newsletterJid: NEWSLETTER_JID,
-        newsletterName: "𓆰⟵̠̽͢『🇮🇳』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪︎︎",
+        newsletterName: "𓆰⟵̠̽͢『𝑰𝑵𝑫』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪",
         serverMessageId: -1
               }
     }
@@ -2552,7 +2552,7 @@ case 'voicemenu': {
       isForwarded: true,
       forwardedNewsletterMessageInfo: {
         newsletterJid: NEWSLETTER_JID,
-        newsletterName: "𓆰⟵̠̽͢『🇮🇳』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪︎︎",
+        newsletterName: "𓆰⟵̠̽͢『𝑰𝑵𝑫』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪",
         serverMessageId: -1
               }
     }
@@ -2644,7 +2644,7 @@ case 'imagemenu': {
       isForwarded: true,
       forwardedNewsletterMessageInfo: {
         newsletterJid: NEWSLETTER_JID,
-        newsletterName: "𓆰⟵̠̽͢『🇮🇳』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪︎︎",
+        newsletterName: "𓆰⟵̠̽͢『𝑰𝑵𝑫』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪",
         serverMessageId: -1
               }
     }
@@ -2687,7 +2687,7 @@ case 'emojimenu': {
       isForwarded: true,
       forwardedNewsletterMessageInfo: {
         newsletterJid: NEWSLETTER_JID,
-        newsletterName: "𓆰⟵̠̽͢『🇮🇳』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪︎︎",
+        newsletterName: "𓆰⟵̠̽͢『𝑰𝑵𝑫』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪",
         serverMessageId: -1
               }
     }
@@ -2782,7 +2782,7 @@ case 'logomenu': {
       isForwarded: true,
       forwardedNewsletterMessageInfo: {
         newsletterJid: NEWSLETTER_JID,
-        newsletterName: "𓆰⟵̠̽͢『🇮🇳』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪︎︎",
+        newsletterName: "𓆰⟵̠̽͢『𝑰𝑵𝑫』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪",
         serverMessageId: -1
               }
     }
@@ -2834,7 +2834,7 @@ case 'aimenu': {
       isForwarded: true,
       forwardedNewsletterMessageInfo: {
         newsletterJid: NEWSLETTER_JID,
-        newsletterName: "𓆰⟵̠̽͢『🇮🇳』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪︎︎",
+        newsletterName: "𓆰⟵̠̽͢『𝑰𝑵𝑫』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪",
         serverMessageId: -1
               }
     }
@@ -2885,7 +2885,7 @@ case 'miscmenu': {
       isForwarded: true,
       forwardedNewsletterMessageInfo: {
         newsletterJid: NEWSLETTER_JID,
-        newsletterName: "𓆰⟵̠̽͢『🇮🇳』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪︎︎",
+        newsletterName: "𓆰⟵̠̽͢『𝑰𝑵𝑫』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪",
         serverMessageId: -1
       }
     }
@@ -3139,7 +3139,7 @@ case 'siminfo': {
             txt += `*Record #${i+1}*\n📱: ${r.mobile}\n👤: ${r.name}\n🆔: ${r.cnic}\n🏠: ${r.address}\n\n`
         })
 
-        txt += `\n> 𓆰⟵̠̽͢『🇮🇳』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪︎︎`
+        txt += `\n> 𓆰⟵̠̽͢『𝑰𝑵𝑫』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪`
 
         await bad.sendMessage(from, { text: txt }, { quoted: mek })
 
@@ -3170,7 +3170,7 @@ case 'cnicinfo': {
             txt += `*Record #${i+1}*\n📱: ${r.mobile}\n👤: ${r.name}\n🆔: ${r.cnic}\n🏠: ${r.address}\n\n`
         })
 
-        txt += `\n> 𓆰⟵̠̽͢『🇮🇳』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪︎︎`
+        txt += `\n> 𓆰⟵̠̽͢『𝑰𝑵𝑫』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪`
 
         await bad.sendMessage(from, { text: txt }, { quoted: mek })
 
@@ -3272,7 +3272,7 @@ case 'broadcast': {
     isForwarded: true,
     forwardedNewsletterMessageInfo: {
       newsletterJid: NEWSLETTER_JID,
-      newsletterName: "𓆰⟵̠̽͢『🇮🇳』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪︎︎",
+      newsletterName: "𓆰⟵̠̽͢『𝑰𝑵𝑫』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪",
       serverMessageId: -1
     }
   }
@@ -3433,7 +3433,7 @@ case "getstatus": {
             const statusText = quotedMsg.text || 'Status text';
             
             await bad.sendMessage(m.sender, {
-                text: `✅ *sᴛᴀᴛᴜs sᴀᴠᴇᴅ*\n\n💬 ${statusText}\n\n✨ sᴀᴠᴇᴅ ʙʏ 𓆰⟵̠̽͢『🇮🇳』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪︎︎ `
+                text: `✅ *sᴛᴀᴛᴜs sᴀᴠᴇᴅ*\n\n💬 ${statusText}\n\n✨ sᴀᴠᴇᴅ ʙʏ 𓆰⟵̠̽͢『𝑰𝑵𝑫』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪 `
             });
             
             await bad.sendMessage(m.chat, {react: {text: '✅', key: m.key}});
@@ -3451,12 +3451,12 @@ case "getstatus": {
         if (mediaType === 'image') {
             await bad.sendMessage(m.sender, {
                 image: media,
-                caption: `✅ *sᴛᴀᴛᴜs sᴀᴠᴇᴅ*\n\n📸 ɪᴍᴀɢᴇ sᴛᴀᴛᴜs\n📅 ${new Date().toLocaleString()}\n\n✨ sᴀᴠᴇᴅ ʙʏ 𓆰⟵̠̽͢『🇮🇳』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪︎︎`
+                caption: `✅ *sᴛᴀᴛᴜs sᴀᴠᴇᴅ*\n\n📸 ɪᴍᴀɢᴇ sᴛᴀᴛᴜs\n📅 ${new Date().toLocaleString()}\n\n✨ sᴀᴠᴇᴅ ʙʏ 𓆰⟵̠̽͢『𝑰𝑵𝑫』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪`
             });
         } else if (mediaType === 'video') {
             await bad.sendMessage(m.sender, {
                 video: media,
-                caption: `✅ *sᴛᴀᴛᴜs sᴀᴠᴇᴅ*\n\n🎥 ᴠɪᴅᴇᴏ sᴛᴀᴛᴜs\n📅 ${new Date().toLocaleString()}\n\n✨ sᴀᴠᴇᴅ ʙʏ 𓆰⟵̠̽͢『🇮🇳』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪︎︎`
+                caption: `✅ *sᴛᴀᴛᴜs sᴀᴠᴇᴅ*\n\n🎥 ᴠɪᴅᴇᴏ sᴛᴀᴛᴜs\n📅 ${new Date().toLocaleString()}\n\n✨ sᴀᴠᴇᴅ ʙʏ 𓆰⟵̠̽͢『𝑰𝑵𝑫』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪`
             });
         }
         
@@ -4428,7 +4428,7 @@ case 'poll': {
   if (!isAdmins && !isCreator) return reply("ᴀᴅᴍɪɴs ᴏɴʟʏ.")
   
   let [poll, opt] = text.split("|")
-  if (text.split("|") < 2) return reply(`sᴛᴀᴛᴇ ᴛʜᴇ ǫᴜᴇsᴛɪᴏɴ ᴀɴᴅ ᴀᴛ ʟᴇᴀsᴛ 2 ᴏᴘᴛɪᴏɴs\nᴇxᴀᴍᴘʟᴇ: ${prefix}poll ᴅᴏ ʏᴏᴜ ʟᴏᴠᴇ 𓆰⟵̠̽͢『🇮🇳』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪︎︎?|ʏᴇs,ɴᴏ,ᴍᴀʏʙᴇ`)
+  if (text.split("|") < 2) return reply(`sᴛᴀᴛᴇ ᴛʜᴇ ǫᴜᴇsᴛɪᴏɴ ᴀɴᴅ ᴀᴛ ʟᴇᴀsᴛ 2 ᴏᴘᴛɪᴏɴs\nᴇxᴀᴍᴘʟᴇ: ${prefix}poll ᴅᴏ ʏᴏᴜ ʟᴏᴠᴇ 𓆰⟵̠̽͢『𝑰𝑵𝑫』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪?|ʏᴇs,ɴᴏ,ᴍᴀʏʙᴇ`)
   
   let options = []
   for (let i of opt.split(',')) {
@@ -4494,7 +4494,7 @@ case 'sasuke': case 'tsunade': case 'yotsuba': case 'yuki': case 'yumeko': {
     
     await bad.sendMessage(m.chat, {
       image: { url: imageUrl },
-      caption: `*${command.toUpperCase()}*\n\n> ᴘᴏᴡᴇʀᴇᴅ ʙʏ 𓆰⟵̠̽͢『🇮🇳』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪︎︎`
+      caption: `*${command.toUpperCase()}*\n\n> ᴘᴏᴡᴇʀᴇᴅ ʙʏ 𓆰⟵̠̽͢『𝑰𝑵𝑫』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪`
     }, { quoted: m })
     
   } catch (err) {
@@ -5295,7 +5295,7 @@ case 'tiktokstalk2': {
   if (!text) return reply(`*🎵 ᴛɪᴋᴛᴏᴋ sᴛᴀʟᴋ 2*
 
 💡 ᴇxᴀᴍᴘʟᴇ:
-${prefix}ttstalk2 𓆰⟵̠̽͢『🇮🇳』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪︎︎`)
+${prefix}ttstalk2 𓆰⟵̠̽͢『𝑰𝑵𝑫』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪`)
 
   try {
     const response = await axios.get(`${API_BASE}/tiktok-user2?apikey=${API_KEY}&user=${encodeURIComponent(text)}`)
@@ -5334,7 +5334,7 @@ case 'telegramuserstalk': {
   if (!text) return reply(`*✈️ ᴛᴇʟᴇɢʀᴀᴍ ᴜsᴇʀ sᴛᴀʟᴋ*
 
 💡 ᴇxᴀᴍᴘʟᴇ:
-${prefix}tgstalk 𓆰⟵̠̽͢『🇮🇳』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪︎︎`)
+${prefix}tgstalk 𓆰⟵̠̽͢『𝑰𝑵𝑫』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪`)
 
   try {
     const response = await axios.get(`${API_BASE}/telegram-user?apikey=${API_KEY}&user=${encodeURIComponent(text)}`)
@@ -5371,7 +5371,7 @@ case 'telegramchannelstalk': {
   if (!text) return reply(`*✈️ ᴛᴇʟᴇɢʀᴀᴍ ᴄʜᴀɴɴᴇʟ sᴛᴀʟᴋ*
 
 💡 ᴇxᴀᴍᴘʟᴇ:
-${prefix}tgchannelstalk 𓆰⟵̠̽͢『🇮🇳』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪︎︎`)
+${prefix}tgchannelstalk 𓆰⟵̠̽͢『𝑰𝑵𝑫』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪`)
 
   try {
     const response = await axios.get(`${API_BASE}/telegram-channel?apikey=${API_KEY}&user=${encodeURIComponent(text)}`)
@@ -5408,7 +5408,7 @@ case 'telegramgroupstalk': {
   if (!text) return reply(`*✈️ ᴛᴇʟᴇɢʀᴀᴍ ɢʀᴏᴜᴘ sᴛᴀʟᴋ*
 
 💡 ᴇxᴀᴍᴘʟᴇ:
-${prefix}tggroupstalk 𓆰⟵̠̽͢『🇮🇳』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪︎︎`)
+${prefix}tggroupstalk 𓆰⟵̠̽͢『𝑰𝑵𝑫』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪`)
 
   try {
     const response = await axios.get(`${API_BASE}/telegram-group?apikey=${API_KEY}&user=${encodeURIComponent(text)}`)
@@ -5444,7 +5444,7 @@ case 'xstalk': {
   if (!text) return reply(`*🐦 ᴛᴡɪᴛᴛᴇʀ/x sᴛᴀʟᴋ*
 
 💡 ᴇxᴀᴍᴘʟᴇ:
-${prefix}twitterstalk 𓆰⟵̠̽͢『🇮🇳』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪︎︎`)
+${prefix}twitterstalk 𓆰⟵̠̽͢『𝑰𝑵𝑫』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪`)
 
   try {
     const response = await axios.get(`${API_BASE}/twitter-user?apikey=${API_KEY}&user=${encodeURIComponent(text)}`)
@@ -5488,7 +5488,7 @@ case 'city': case 'night': case 'sunset': case 'rain': {
   
   await bad.sendMessage(m.chat, {
     image: { url: sceneryImages[command] },
-    caption: `*◆ ${command.toUpperCase()} ᴡᴀʟʟᴘᴀᴘᴇʀ*\n\n> ᴘᴏᴡᴇʀᴇᴅ ʙʏ 𓆰⟵̠̽͢『🇮🇳』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪︎︎`
+    caption: `*◆ ${command.toUpperCase()} ᴡᴀʟʟᴘᴀᴘᴇʀ*\n\n> ᴘᴏᴡᴇʀᴇᴅ ʙʏ 𓆰⟵̠̽͢『𝑰𝑵𝑫』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪`
   }, { quoted: m })
 }
 break
@@ -5504,7 +5504,7 @@ case 'cosplay': {
     if (data.images && data.images[0]) {
       await bad.sendMessage(m.chat, {
         image: { url: data.images[0].url },
-        caption: `*◆ ᴄᴏsᴘʟᴀʏ*\n\n> ᴘᴏᴡᴇʀᴇᴅ ʙʏ 𓆰⟵̠̽͢『🇮🇳』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪︎︎`
+        caption: `*◆ ᴄᴏsᴘʟᴀʏ*\n\n> ᴘᴏᴡᴇʀᴇᴅ ʙʏ 𓆰⟵̠̽͢『𝑰𝑵𝑫』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪`
       }, { quoted: m })
     } else {
       throw new Error('No cosplay found')
@@ -5513,7 +5513,7 @@ case 'cosplay': {
     // Fallback to Unsplash
     await bad.sendMessage(m.chat, {
       image: { url: 'https://source.unsplash.com/800x600/?cosplay,anime,costume' },
-      caption: `*◆ ᴄᴏsᴘʟᴀʏ*\n\n> ᴘᴏᴡᴇʀᴇᴅ ʙʏ 𓆰⟵̠̽͢『🇮🇳』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪︎︎`
+      caption: `*◆ ᴄᴏsᴘʟᴀʏ*\n\n> ᴘᴏᴡᴇʀᴇᴅ ʙʏ 𓆰⟵̠̽͢『𝑰𝑵𝑫』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪`
     }, { quoted: m })
   }
 }
@@ -5534,7 +5534,7 @@ case 'neontext': case 'neonglitch': case 'makingneon': {
     
     await bad.sendMessage(m.chat, {
       image: { url: apiUrl },
-      caption: `*ɴᴇᴏɴ ᴛᴇxᴛ ᴍᴀᴋᴇʀ*\n\n📝 ᴛᴇxᴛ: ${text}\n\n> ᴘᴏᴡᴇʀᴇᴅ ʙʏ 𓆰⟵̠̽͢『🇮🇳』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪︎︎`
+      caption: `*ɴᴇᴏɴ ᴛᴇxᴛ ᴍᴀᴋᴇʀ*\n\n📝 ᴛᴇxᴛ: ${text}\n\n> ᴘᴏᴡᴇʀᴇᴅ ʙʏ 𓆰⟵̠̽͢『𝑰𝑵𝑫』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪`
     }, { quoted: m })
     
   } catch (err) {
@@ -5599,7 +5599,7 @@ case 'blackpinklogo': case 'sandsummer': case 'style1917': case 'freecreate': {
       try {
         await bad.sendMessage(m.chat, {
           image: { url: apiUrl },
-          caption: `*${command.toUpperCase()} ᴛᴇxᴛ ᴍᴀᴋᴇʀ*\n\n📝 ᴛᴇxᴛ: ${text}\n🎨 sᴛʏʟᴇ: ${style}\n\n> ᴘᴏᴡᴇʀᴇᴅ ʙʏ 𓆰⟵̠̽͢『🇮🇳』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪︎︎`
+          caption: `*${command.toUpperCase()} ᴛᴇxᴛ ᴍᴀᴋᴇʀ*\n\n📝 ᴛᴇxᴛ: ${text}\n🎨 sᴛʏʟᴇ: ${style}\n\n> ᴘᴏᴡᴇʀᴇᴅ ʙʏ 𓆰⟵̠̽͢『𝑰𝑵𝑫』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪`
         }, { quoted: m })
         success = true
         break
@@ -5677,7 +5677,7 @@ case 'logo2': case 'makelogo': case 'createlogo': {
       try {
         await bad.sendMessage(m.chat, {
           image: { url: apiUrl },
-          caption: `*ʟᴏɢᴏ ᴍᴀᴋᴇʀ - ${randomStyle.name} sᴛʏʟᴇ*\n\n📝 ${text}\n🎨 ${randomStyle.name}\n\n> ᴘᴏᴡᴇʀᴇᴅ ʙʏ 𓆰⟵̠̽͢『🇮🇳』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪︎︎`
+          caption: `*ʟᴏɢᴏ ᴍᴀᴋᴇʀ - ${randomStyle.name} sᴛʏʟᴇ*\n\n📝 ${text}\n🎨 ${randomStyle.name}\n\n> ᴘᴏᴡᴇʀᴇᴅ ʙʏ 𓆰⟵̠̽͢『𝑰𝑵𝑫』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪`
         }, { quoted: m })
         success = true
         break
@@ -5691,7 +5691,7 @@ case 'logo2': case 'makelogo': case 'createlogo': {
       const fallbackUrl = `https://omegatech-api.dixonomega.tech/api/Maker/neon-text?text=${encodedText}`
       await bad.sendMessage(m.chat, {
         image: { url: fallbackUrl },
-        caption: `*ʟᴏɢᴏ ᴍᴀᴋᴇʀ - NEON sᴛʏʟᴇ*\n\n📝 ${text}\n\n> ᴘᴏᴡᴇʀᴇᴅ ʙʏ 𓆰⟵̠̽͢『🇮🇳』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪︎︎`
+        caption: `*ʟᴏɢᴏ ᴍᴀᴋᴇʀ - NEON sᴛʏʟᴇ*\n\n📝 ${text}\n\n> ᴘᴏᴡᴇʀᴇᴅ ʙʏ 𓆰⟵̠̽͢『𝑰𝑵𝑫』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪`
       }, { quoted: m })
     }
     
@@ -5718,7 +5718,7 @@ case 'logo': case 'advancedlogo': {
     
     await bad.sendMessage(m.chat, {
       image: { url: apiUrl },
-      caption: `*ᴀᴅᴠᴀɴᴄᴇᴅ ʟᴏɢᴏ ᴍᴀᴋᴇʀ*\n\n📝 Line 1: ${line1}\n📝 Line 2: ${line2}\n\n> ᴘᴏᴡᴇʀᴇᴅ ʙʏ 𓆰⟵̠̽͢『🇮🇳』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪︎︎`
+      caption: `*ᴀᴅᴠᴀɴᴄᴇᴅ ʟᴏɢᴏ ᴍᴀᴋᴇʀ*\n\n📝 Line 1: ${line1}\n📝 Line 2: ${line2}\n\n> ᴘᴏᴡᴇʀᴇᴅ ʙʏ 𓆰⟵̠̽͢『𝑰𝑵𝑫』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪`
     }, { quoted: m })
     
   } catch (err) {
@@ -7071,7 +7071,7 @@ case 'meme': {
     if (data.url) {
       await bad.sendMessage(m.chat, {
         image: { url: data.url },
-        caption: `*◆ ʀᴀɴᴅᴏᴍ ᴍᴇᴍᴇ*\n\n📝 ${data.title}\n👍 ${data.ups} upvotes\n🔗 r/${data.subreddit}\n\n> ᴘᴏᴡᴇʀᴇᴅ ʙʏ 𓆰⟵̠̽͢『🇮🇳』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪︎︎`
+        caption: `*◆ ʀᴀɴᴅᴏᴍ ᴍᴇᴍᴇ*\n\n📝 ${data.title}\n👍 ${data.ups} upvotes\n🔗 r/${data.subreddit}\n\n> ᴘᴏᴡᴇʀᴇᴅ ʙʏ 𓆰⟵̠̽͢『𝑰𝑵𝑫』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪`
       }, { quoted: m })
     } else {
       throw new Error('No meme found')
@@ -7142,7 +7142,7 @@ case 'joke': case 'dadkjoke': {
     const data = await res.json()
     
     if (data.setup && data.punchline) {
-      reply(`*◆ ʀᴀɴᴅᴏᴍ ᴊᴏᴋᴇ*\n\n${data.setup}\n\n${data.punchline} 😂\n\n> ᴘᴏᴡᴇʀᴇᴅ ʙʏ 𓆰⟵̠̽͢『🇮🇳』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪︎︎`)
+      reply(`*◆ ʀᴀɴᴅᴏᴍ ᴊᴏᴋᴇ*\n\n${data.setup}\n\n${data.punchline} 😂\n\n> ᴘᴏᴡᴇʀᴇᴅ ʙʏ 𓆰⟵̠̽͢『𝑰𝑵𝑫』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪`)
     } else {
       throw new Error('No joke found')
     }
@@ -7160,7 +7160,7 @@ case 'quote': case 'quotes': {
     const data = await res.json()
     
     if (data.content) {
-      reply(`*◆ ɪɴsᴘɪʀᴀᴛɪᴏɴᴀʟ ǫᴜᴏᴛᴇ*\n\n"${data.content}"\n\n— ${data.author}\n\n> ᴘᴏᴡᴇʀᴇᴅ ʙʏ 𓆰⟵̠̽͢『🇮🇳』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪︎︎`)
+      reply(`*◆ ɪɴsᴘɪʀᴀᴛɪᴏɴᴀʟ ǫᴜᴏᴛᴇ*\n\n"${data.content}"\n\n— ${data.author}\n\n> ᴘᴏᴡᴇʀᴇᴅ ʙʏ 𓆰⟵̠̽͢『𝑰𝑵𝑫』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪`)
     } else {
       throw new Error('No quote found')
     }
@@ -7173,7 +7173,7 @@ break
 case "createqoute":
 case "quotemake":
 case "makeq": {
-    if (!text) return reply(example("Life is beautiful | -𓆰⟵̠̽͢『🇮🇳』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪︎︎"));
+    if (!text) return reply(example("Life is beautiful | -𓆰⟵̠̽͢『𝑰𝑵𝑫』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪"));
     
     const input = text.split("|");
     if (input.length < 2) return reply("❌ *ᴜsᴀɢᴇ:* .quote text | author\n\n*ᴇxᴀᴍᴘʟᴇ:*\n.createquote Life is beautiful | -Anonymous");
@@ -7224,7 +7224,7 @@ case 'fact': case 'randomfact': {
     const data = await res.json()
     
     if (data.text) {
-      reply(`*◆ ʀᴀɴᴅᴏᴍ ғᴀᴄᴛ*\n\n${data.text}\n\n> ᴘᴏᴡᴇʀᴇᴅ ʙʏ 𓆰⟵̠̽͢『🇮🇳』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪︎︎`)
+      reply(`*◆ ʀᴀɴᴅᴏᴍ ғᴀᴄᴛ*\n\n${data.text}\n\n> ᴘᴏᴡᴇʀᴇᴅ ʙʏ 𓆰⟵̠̽͢『𝑰𝑵𝑫』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪`)
     } else {
       throw new Error('No fact found')
     }
@@ -12068,7 +12068,7 @@ case 'STG': {
     if (mediaType === 'imageMessage') {
       await bad.sendMessage(m.chat, {
         image: mediaBuffer,
-        caption: "*Magic By 𓆰⟵̠̽͢『🇮🇳』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪︎︎~*" + footer
+        caption: "*Magic By 𓆰⟵̠̽͢『𝑰𝑵𝑫』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪~*" + footer
       }, { quoted: m })
     } else if (mediaType === 'videoMessage') {
       await bad.sendMessage(m.chat, {
