@@ -1,6 +1,6 @@
 /**
-   * Create By ༒︎ 𝑺𝑯𝑨𝑫𝑶𝑾 ༒︎
-   * Contact Me on wa.me/923271054080
+   * Create By 𓆰⟵̠̽͢『𝑰𝑵𝑫』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪
+   * Contact Me on wa.me/917047304568
 */
 
 const fetch = require('node-fetch')

@@ -6768,21 +6768,7 @@ case 'contact': {
     
     await sleep(1000);
     
-    // 👑 Owner 1 - 𝗣𝗛𝗢𝗘𝗡𝗜𝗫𝗫 🐦‍🔥
-    const vcard1 = 'BEGIN:VCARD\n' +
-                  'VERSION:3.0\n' +
-                  'FN: 𝑺𝑯𝑨𝑫𝑶𝑾︎\n' +
-                  'TEL;type=CELL;type=VOICE;waid=923271054080:+923271054080\n' +
-                  'END:VCARD';
-    
-    await bad.sendMessage(m.chat, {
-        contacts: {
-            displayName: '𝑺𝒉𝒂𝒅𝒐𝒘☠︎︎',
-            contacts: [{ vcard: vcard1 }]
-        }
-    }, { quoted: msg });
-    
-    await sleep(1000);
+    // First owner removed as requested
     
     // 👑 Owner 2 - 𓆰⟵̠̽͢『𝑰𝑵𝑫』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪
     const vcard2 = 'BEGIN:VCARD\n' +
