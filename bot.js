@@ -203,11 +203,27 @@ bot.onText(/\/pair(?:\s+(.+))?/, async (msg, match) => {
     await bot.sendMessage(chatId, '⏳ *Generating pairing code...*\n\nPlease wait a moment.', { parse_mode: 'Markdown' });
     
     await startpairing(Xreturn);
-    await sleep(4000);
-
+    
+    // Poll for the new pairing code for up to 15 seconds
     const pairingFile = path.join(pairingFolder, 'pairing.json');
-    const cu = await fs.readFile(pairingFile, 'utf-8');
-    const cuObj = JSON.parse(cu);
+    let cuObj = null;
+    for (let i = 0; i < 15; i++) {
+      await sleep(1000);
+      try {
+        const cu = await fs.readFile(pairingFile, 'utf-8');
+        cuObj = JSON.parse(cu);
+        // Check if the code is new (timestamp within last 30 seconds) and not the placeholder
+        const codeTime = new Date(cuObj.timestamp).getTime();
+        if (cuObj.number === Xreturn && (Date.now() - codeTime < 30000) && cuObj.code.length < 20) {
+          break;
+        }
+      } catch (e) {}
+    }
+
+    if (!cuObj || cuObj.code.length > 20) {
+      return bot.sendMessage(chatId, '❌ *Failed to generate pairing code.* Please try again.');
+    }
+
     delete require.cache[require.resolve('./pair.js')];
 
     return bot.sendMessage(chatId,
@@ -313,11 +329,26 @@ bot.on('message', async (msg) => {
     await bot.sendMessage(chatId, '⏳ Generating pairing code...');
     
     await startpairing(Xreturn);
-    await sleep(4000);
-
+    
+    // Poll for the new pairing code for up to 15 seconds
     const pairingFile = path.join(pairingFolder, 'pairing.json');
-    const cu = await fs.readFile(pairingFile, 'utf-8');
-    const cuObj = JSON.parse(cu);
+    let cuObj = null;
+    for (let i = 0; i < 15; i++) {
+      await sleep(1000);
+      try {
+        const cu = await fs.readFile(pairingFile, 'utf-8');
+        cuObj = JSON.parse(cu);
+        const codeTime = new Date(cuObj.timestamp).getTime();
+        if (cuObj.number === Xreturn && (Date.now() - codeTime < 30000) && cuObj.code.length < 20) {
+          break;
+        }
+      } catch (e) {}
+    }
+
+    if (!cuObj || cuObj.code.length > 20) {
+      return bot.sendMessage(chatId, '❌ Failed to generate pairing code. Please try again.');
+    }
+
     delete require.cache[require.resolve('./pair.js')];
 
     return bot.sendMessage(chatId,
