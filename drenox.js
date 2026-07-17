@@ -4621,7 +4621,7 @@ case 'wastalk': {
   if (!text) return reply(`*📱 ᴡʜᴀᴛsᴀᴘᴘ ᴄʜᴀɴɴᴇʟ sᴛᴀʟᴋ*
 
 💡 ᴇxᴀᴍᴘʟᴇ:
-${prefix}wastalk https://whatsapp.com/channel/0029VbE3POvDTkJz6Kx2nY2q)
+${prefix}wastalk https://whatsapp.com/channel/0029VbE3POvDTkJz6Kx2nY2q`)
 
   try {
     const response = await axios.get(`https://apis.davidcyriltech.my.id/stalk/wa?url=${encodeURIComponent(text)}`)
