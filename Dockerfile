@@ -1,4 +1,4 @@
-FROM node:20-slim
+FROM node:20
 
 # Install system dependencies for image processing and other modules
 RUN apt-get update && apt-get install -y \
@@ -18,10 +18,11 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install dependencies with legacy-peer-deps to avoid conflicts
-RUN npm install --legacy-peer-deps
+# Use --ignore-scripts to prevent any problematic preinstall/postinstall scripts from running
+RUN npm install --legacy-peer-deps --ignore-scripts
 
 # Copy the rest of the project files
 COPY . .
 
 # Start the bot
-CMD ["npm", "start"]
+CMD ["node", "index.js"]
