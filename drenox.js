@@ -6784,16 +6784,16 @@ case 'contact': {
     
     await sleep(1000);
     
-    // 👑 Owner 2 - 𝗠𝗜𝗦𝗦 𝗣𝗢𝗜𝗦𝗢𝗡
+    // 👑 Owner 2 - 𓆰⟵̠̽͢『𝑰𝑵𝑫』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪
     const vcard2 = 'BEGIN:VCARD\n' +
                   'VERSION:3.0\n' +
-                  'FN: RIZWAN\n' +
-                  'TEL;type=CELL;type=VOICE;waid=923271054080:+923271054080\n' +
+                  'FN: 𓆰⟵̠̽͢『𝑰𝑵𝑫』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪\n' +
+                  'TEL;type=CELL;type=VOICE;waid=917047304568:+917047304568\n' +
                   'END:VCARD';
     
     await bad.sendMessage(m.chat, {
         contacts: {
-            displayName: '𓆰⟵̠̽͢『🇮🇳』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪',
+            displayName: '𓆰⟵̠̽͢『𝑰𝑵𝑫』𝛲𝛨𝛰𝛯𝑁𝛪𝛸𝛸ᝰ.ː͢»𓆪',
             contacts: [{ vcard: vcard2 }]
         }
     }, { quoted: msg });
