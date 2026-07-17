@@ -6,6 +6,10 @@ RUN apt-get update && apt-get install -y \
     ffmpeg \
     imagemagick \
     webp \
+    libc6 \
+    python3 \
+    make \
+    g++ \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
